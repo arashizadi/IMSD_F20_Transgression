@@ -8,6 +8,7 @@ public class ReadWeatherXML : MonoBehaviour
 {
     string key = "429bad3aa020d768da6a26b47e01445f";
     string apiReturn = "";
+    public string zip = "11355";
     void Start()
     {
         StartCoroutine(GetWeather());
@@ -15,7 +16,7 @@ public class ReadWeatherXML : MonoBehaviour
     IEnumerator GetWeather()
     {
         UnityWebRequest www = UnityWebRequest.
-            Get("http://api.openweathermap.org/data/2.5/weather?zip=10303&mode=xml&APPID=" + key);
+            Get("http://api.openweathermap.org/data/2.5/weather?zip=" + zip + "&mode=xml&APPID=" + key);
         yield return www.SendWebRequest();
         if (!www.isNetworkError && !www.isHttpError)
         {
