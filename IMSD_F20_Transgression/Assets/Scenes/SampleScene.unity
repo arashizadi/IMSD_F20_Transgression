@@ -5397,6 +5397,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2142556327}
   - component: {fileID: 2142556326}
+  - component: {fileID: 2142556328}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -5416,7 +5417,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed74702e71f0a3649a754539c0258e0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zip: 11355
   rainEmitter: {fileID: 1946815453}
   text: {fileID: 620106713}
 --- !u!4 &2142556327
@@ -5433,3 +5433,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2142556328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142556325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1a582caabf1f548b8bf3fb522b8df7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -8,9 +8,9 @@ using UnityEngine.UI;
 
 public class ReadWeatherXML : MonoBehaviour
 {
-    string key = "429bad3aa020d768da6a26b47e01445f";
+    private string key = "429bad3aa020d768da6a26b47e01445f";
     string apiReturn = "";
-    public string zip = "11355";
+    public static string zip = "11355";
     public GameObject rainEmitter;
     public Text text;
     private string _zip;
