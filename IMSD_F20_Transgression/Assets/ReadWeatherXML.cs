@@ -5,14 +5,17 @@ using System;
 using System.Xml;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Xml.Linq;
+using System.ComponentModel.Design.Serialization;
 
 public class ReadWeatherXML : MonoBehaviour
 {
     private string key = "429bad3aa020d768da6a26b47e01445f";
     string apiReturn = "";
-    public static string zip = "11355";
+    public string zip;
     public GameObject rainEmitter;
     public Text text;
+    public Text cityText;
     private string _zip;
     void Start()
     {
@@ -31,6 +34,7 @@ public class ReadWeatherXML : MonoBehaviour
         {
             rainEmitter.SetActive(true);
             text.text = "Rainy";
+            //cityText.text = 
         }
         else if (apiReturn.Contains("mode=\"snow\""))
         {
@@ -78,10 +82,19 @@ public class ReadWeatherXML : MonoBehaviour
             // Get text content like this:
             Debug.Log(www.downloadHandler.text);
             apiReturn = www.downloadHandler.text;
+            cityText.text = getCity();
         }
         else
         {
             Debug.Log(www.error + " " + www);
         }
+    }
+
+    private string getCity()
+    {
+        XDocument doc = XDocument.Parse(apiReturn);
+        XAttribute _city = doc.Element("current").Element("city").Attribute("name");
+        //Debug.Log("City: " + _city.Value);
+        return _city.Value;
     }
 }
