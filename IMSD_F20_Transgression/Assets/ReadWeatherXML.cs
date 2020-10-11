@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Xml;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Xml.Linq;
-using System.ComponentModel.Design.Serialization;
-
 public class ReadWeatherXML : MonoBehaviour
 {
-    private string key = "429bad3aa020d768da6a26b47e01445f";
-    string apiReturn = "";
-    public string zip;
     public GameObject rainEmitter;
-    public Text text;
-    public Text cityText;
-    private string _zip;
+    public Text text, cityText, fText;
+    public Button fButton;
+    public Transform TempText;
+    public string zip;
+    private string _zip, apiReturn = "", key = "429bad3aa020d768da6a26b47e01445f";
+    private bool fahrenheit = true;
     void Start()
     {
         _zip = zip;
         StartCoroutine(GetWeather());
+        fText.text = "F";
+        fButton.onClick.AddListener(FToC);
     }
 
     void Update()
@@ -96,5 +95,18 @@ public class ReadWeatherXML : MonoBehaviour
         XAttribute _city = doc.Element("current").Element("city").Attribute("name");
         //Debug.Log("City: " + _city.Value);
         return _city.Value;
+    }
+    void FToC()
+    {
+        if (fahrenheit)
+        {
+            fText.text = "C";
+            fahrenheit = false;
+        }
+        else
+        {
+            fText.text = "F";
+            fahrenheit = true;
+        }
     }
 }
