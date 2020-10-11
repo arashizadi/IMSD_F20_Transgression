@@ -8,14 +8,17 @@ using System.Xml.Linq;
 public class ReadWeatherXML : MonoBehaviour
 {
     public GameObject rainEmitter;
-    public Text text, cityText, fText;
+    public Text text, cityText, currentTempText, fText, inputText;
+    public InputField zipInput;
     public Button fButton;
-    public Transform TempText;
+    public Transform transTempText, transCityText, transFButton;
     public string zip;
+    private double currentTemp, minTemp, maxTemp;
     private string _zip, apiReturn = "", key = "429bad3aa020d768da6a26b47e01445f";
     private bool fahrenheit = true;
     void Start()
     {
+        inputText.text = "";
         _zip = zip;
         StartCoroutine(GetWeather());
         fText.text = "F";
@@ -24,6 +27,14 @@ public class ReadWeatherXML : MonoBehaviour
 
     void Update()
     {
+        if (inputText.text.Length == 5 && inputText.text != _zip)
+        {
+             zip = inputText.text;
+        }
+        if (zipInput != null && zipInput.text.Length == 5 && zipInput.text != _zip)
+        {
+            zipInput.text = zip;
+        }
         if (zip.Length == 5 && _zip != zip)
         {
             StartCoroutine(GetWeather());
@@ -37,37 +48,37 @@ public class ReadWeatherXML : MonoBehaviour
         }
         else if (apiReturn.Contains("mode=\"snow\""))
         {
-            rainEmitter.SetActive(true);
+            //rainEmitter.SetActive(true);
             text.text = "Snowy";
         }
         else if (apiReturn.Contains("mode=\"clear\""))
         {
-            rainEmitter.SetActive(true);
+            //rainEmitter.SetActive(true);
             text.text = "Clear Sky";
         }
         else if (apiReturn.Contains("mode=\"thunderstorm\""))
         {
-            rainEmitter.SetActive(true);
+            //rainEmitter.SetActive(true);
             text.text = "Thunderstorm";
         }
         else if (apiReturn.Contains("mode=\"drizzle\""))
         {
-            rainEmitter.SetActive(true);
+            //rainEmitter.SetActive(true);
             text.text = "Drizzle";
         }
         else if (apiReturn.Contains("mode=\"atmosphere\""))
         {
-            rainEmitter.SetActive(true);
+            //rainEmitter.SetActive(true);
             text.text = "Atmosphere";
         }
         else if (apiReturn.Contains("mode=\"clouds\""))
         {
-            rainEmitter.SetActive(true);
+            //rainEmitter.SetActive(true);
             text.text = "Cloudy";
         }
         else
         {
-            rainEmitter.SetActive(false);
+            //rainEmitter.SetActive(false);
             text.text = "Nice Weather Outside!";
         }
     }
@@ -81,7 +92,10 @@ public class ReadWeatherXML : MonoBehaviour
             // Get text content like this:
             Debug.Log(www.downloadHandler.text);
             apiReturn = www.downloadHandler.text;
-            cityText.text = getCity();
+            GetTemp();
+            cityText.text = GetCity();
+            transTempText.position = new Vector3(transCityText.position.x + (cityText.text.Length * 10) + 30, transTempText.position.y);
+            transFButton.position = new Vector3(transTempText.position.x -50, transFButton.position.y);
         }
         else
         {
@@ -89,7 +103,7 @@ public class ReadWeatherXML : MonoBehaviour
         }
     }
 
-    private string getCity()
+    private string GetCity()
     {
         XDocument doc = XDocument.Parse(apiReturn);
         XAttribute _city = doc.Element("current").Element("city").Attribute("name");
@@ -100,13 +114,39 @@ public class ReadWeatherXML : MonoBehaviour
     {
         if (fahrenheit)
         {
-            fText.text = "C";
             fahrenheit = false;
+            fText.text = "C";
+            GetTemp();
         }
         else
         {
-            fText.text = "F";
             fahrenheit = true;
+            fText.text = "F";
+            GetTemp();
+        }
+    }
+    void GetTemp()
+    {
+        XDocument doc = XDocument.Parse(apiReturn);
+        XAttribute _currentTemp = doc.Element("current").Element("temperature").Attribute("value");
+        currentTemp = Double.Parse(_currentTemp.Value);
+        XAttribute _minTemp = doc.Element("current").Element("temperature").Attribute("min");
+        minTemp = Double.Parse(_minTemp.Value);
+        XAttribute _maxTemp = doc.Element("current").Element("temperature").Attribute("max");
+        maxTemp = Double.Parse(_maxTemp.Value);
+        if (fahrenheit)
+        {
+            currentTemp = Math.Round((1.8*(currentTemp - 273) + 32));
+            currentTempText.text = currentTemp.ToString() + "°";
+            minTemp = Math.Round((1.8 * (minTemp - 273) + 32));
+            maxTemp = Math.Round((1.8 * (maxTemp- 273) + 32));
+        }
+        else
+        {
+            currentTemp = Math.Round(currentTemp - 273.15);
+            currentTempText.text = currentTemp.ToString() + "°";
+            minTemp = Math.Round(minTemp - 273.15);
+            maxTemp = Math.Round(maxTemp - 273.15);
         }
     }
 }
