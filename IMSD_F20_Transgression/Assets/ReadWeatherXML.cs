@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Networking;
@@ -30,10 +29,6 @@ public class ReadWeatherXML : MonoBehaviour
         if (inputText.text.Length == 5 && inputText.text != _zip)
         {
              zip = inputText.text;
-        }
-        if (zipInput != null && zipInput.text.Length == 5 && zipInput.text != _zip)
-        {
-            zipInput.text = zip;
         }
         if (zip.Length == 5 && _zip != zip)
         {
@@ -102,13 +97,36 @@ public class ReadWeatherXML : MonoBehaviour
             Debug.Log(www.error + " " + www);
         }
     }
-
     private string GetCity()
     {
         XDocument doc = XDocument.Parse(apiReturn);
         XAttribute _city = doc.Element("current").Element("city").Attribute("name");
         //Debug.Log("City: " + _city.Value);
         return _city.Value;
+    }
+    void GetTemp()
+    {
+        XDocument doc = XDocument.Parse(apiReturn);
+        XAttribute _currentTemp = doc.Element("current").Element("temperature").Attribute("value");
+        currentTemp = Double.Parse(_currentTemp.Value);
+        XAttribute _minTemp = doc.Element("current").Element("temperature").Attribute("min");
+        minTemp = Double.Parse(_minTemp.Value);
+        XAttribute _maxTemp = doc.Element("current").Element("temperature").Attribute("max");
+        maxTemp = Double.Parse(_maxTemp.Value);
+        if (fahrenheit)
+        {
+            currentTemp = Math.Round((1.8 * (currentTemp - 273) + 32));
+            currentTempText.text = currentTemp.ToString() + "°";
+            minTemp = Math.Round((1.8 * (minTemp - 273) + 32));
+            maxTemp = Math.Round((1.8 * (maxTemp - 273) + 32));
+        }
+        else
+        {
+            currentTemp = Math.Round(currentTemp - 273.15);
+            currentTempText.text = currentTemp.ToString() + "°";
+            minTemp = Math.Round(minTemp - 273.15);
+            maxTemp = Math.Round(maxTemp - 273.15);
+        }
     }
     void FToC()
     {
@@ -123,30 +141,6 @@ public class ReadWeatherXML : MonoBehaviour
             fahrenheit = true;
             fText.text = "F";
             GetTemp();
-        }
-    }
-    void GetTemp()
-    {
-        XDocument doc = XDocument.Parse(apiReturn);
-        XAttribute _currentTemp = doc.Element("current").Element("temperature").Attribute("value");
-        currentTemp = Double.Parse(_currentTemp.Value);
-        XAttribute _minTemp = doc.Element("current").Element("temperature").Attribute("min");
-        minTemp = Double.Parse(_minTemp.Value);
-        XAttribute _maxTemp = doc.Element("current").Element("temperature").Attribute("max");
-        maxTemp = Double.Parse(_maxTemp.Value);
-        if (fahrenheit)
-        {
-            currentTemp = Math.Round((1.8*(currentTemp - 273) + 32));
-            currentTempText.text = currentTemp.ToString() + "°";
-            minTemp = Math.Round((1.8 * (minTemp - 273) + 32));
-            maxTemp = Math.Round((1.8 * (maxTemp- 273) + 32));
-        }
-        else
-        {
-            currentTemp = Math.Round(currentTemp - 273.15);
-            currentTempText.text = currentTemp.ToString() + "°";
-            minTemp = Math.Round(minTemp - 273.15);
-            maxTemp = Math.Round(maxTemp - 273.15);
         }
     }
 }
