@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System.Xml.Linq;
 public class ReadWeatherXML : MonoBehaviour
 {
-    public GameObject rainEmitter;
+    public GameObject rainEmitter, snowEmitter;
     public Text text, cityText, currentTempText, fText, inputText;
     public InputField zipInput;
     public Button fButton;
@@ -34,16 +34,19 @@ public class ReadWeatherXML : MonoBehaviour
         {
             StartCoroutine(GetWeather());
             _zip = zip;
+            zipInput.text = zip;
         }
         if (apiReturn.Contains("mode=\"rain\""))
         {
             rainEmitter.SetActive(true);
+            snowEmitter.SetActive(false);
             text.text = "Rainy";
             //cityText.text = 
         }
         else if (apiReturn.Contains("mode=\"snow\""))
         {
-            //rainEmitter.SetActive(true);
+            snowEmitter.SetActive(true);
+            rainEmitter.SetActive(false);
             text.text = "Snowy";
         }
         else if (apiReturn.Contains("mode=\"clear\""))
@@ -73,7 +76,7 @@ public class ReadWeatherXML : MonoBehaviour
         }
         else
         {
-            //rainEmitter.SetActive(false);
+            rainEmitter.SetActive(false);
             text.text = "Nice Weather Outside!";
         }
     }
