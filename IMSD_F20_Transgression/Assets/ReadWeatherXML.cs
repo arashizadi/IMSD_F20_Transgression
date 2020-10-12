@@ -41,7 +41,6 @@ public class ReadWeatherXML : MonoBehaviour
             rainEmitter.SetActive(true);
             snowEmitter.SetActive(false);
             text.text = "Rainy";
-            //cityText.text = 
         }
         else if (apiReturn.Contains("mode=\"snow\""))
         {
@@ -51,32 +50,38 @@ public class ReadWeatherXML : MonoBehaviour
         }
         else if (apiReturn.Contains("mode=\"clear\""))
         {
-            //rainEmitter.SetActive(true);
+            rainEmitter.SetActive(false);
+            snowEmitter.SetActive(false);
             text.text = "Clear Sky";
         }
         else if (apiReturn.Contains("mode=\"thunderstorm\""))
         {
-            //rainEmitter.SetActive(true);
+            rainEmitter.SetActive(false);
+            snowEmitter.SetActive(false);
             text.text = "Thunderstorm";
         }
         else if (apiReturn.Contains("mode=\"drizzle\""))
         {
-            //rainEmitter.SetActive(true);
+            rainEmitter.SetActive(false);
+            snowEmitter.SetActive(false);
             text.text = "Drizzle";
         }
         else if (apiReturn.Contains("mode=\"atmosphere\""))
         {
-            //rainEmitter.SetActive(true);
+            rainEmitter.SetActive(false);
+            snowEmitter.SetActive(false);
             text.text = "Atmosphere";
         }
         else if (apiReturn.Contains("mode=\"clouds\""))
         {
-            //rainEmitter.SetActive(true);
+            rainEmitter.SetActive(false);
+            snowEmitter.SetActive(false);
             text.text = "Cloudy";
         }
         else
         {
             rainEmitter.SetActive(false);
+            snowEmitter.SetActive(false);
             text.text = "Nice Weather Outside!";
         }
     }
