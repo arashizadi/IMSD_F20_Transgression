@@ -7,7 +7,7 @@ using System.Xml.Linq;
 public class ReadWeatherXML : MonoBehaviour
 {
     public GameObject rainEmitter, snowEmitter;
-    public Text text, cityText, currentTempText, fText, inputText;
+    public Text text, cityText, currentTempText, fText, inputText, lowText, highText;
     public InputField zipInput;
     public Button fButton;
     public Transform transTempText, transCityText, transFButton;
@@ -121,14 +121,18 @@ public class ReadWeatherXML : MonoBehaviour
             currentTemp = Math.Round((1.8 * (currentTemp - 273) + 32));
             currentTempText.text = currentTemp.ToString() + "°";
             minTemp = Math.Round((1.8 * (minTemp - 273) + 32));
+            lowText.text = "Low: " + minTemp.ToString() + "°";
             maxTemp = Math.Round((1.8 * (maxTemp - 273) + 32));
+            highText.text = "High: " + maxTemp.ToString() + "°";
         }
         else
         {
             currentTemp = Math.Round(currentTemp - 273.15);
             currentTempText.text = currentTemp.ToString() + "°";
             minTemp = Math.Round(minTemp - 273.15);
+            lowText.text = "Low: " + minTemp.ToString() + "°";
             maxTemp = Math.Round(maxTemp - 273.15);
+            highText.text = "High: " + maxTemp.ToString() + "°";
         }
     }
     void FToC()
